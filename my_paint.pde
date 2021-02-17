@@ -7,9 +7,9 @@ color[] colorArray = {
   color(255,0,0),
   color(0,255,0),
   color(0,0,255),
-  color(0,0,255),
-  color(0,0,255),
-  color(0,0,255),
+  color(252, 241, 18),
+  color(240, 152, 12),
+  color(237, 17, 204),
   color(255, 255, 255)
 };
 
@@ -44,9 +44,9 @@ void setup(){
 }
 
 void draw(){
-  cursor(HAND);
+  noStroke();
   fill(200);
-  rect(0, 0, width, 80);
+  rect(100, 100, width, 80);
   
   fill(currentColor);
   ellipse(sArray[1][0], sArray[1][1], 40, 40);
@@ -62,7 +62,7 @@ void draw(){
   }
   drawing();
   angleChange();
-  println(posX, posY);
+  println(posAngle);
 }
 
 void updateTuioObject(TuioObject objectTuio){
@@ -71,10 +71,17 @@ void updateTuioObject(TuioObject objectTuio){
   posAngle = round(objectTuio.getAngleDegrees());
 }
 
+
+//void cursorTuioObject(TuioCursor cursorTuio){
+  //to show cursor on screen
+//}
+
 void angleChange(){
   if(posAngle >= 80 && posAngle <= 100){
     update();
     updateShape();
+  }else if(posAngle >= 260 && posAngle <= 280){
+    background(255);
   }
 }
 
@@ -85,10 +92,10 @@ void drawing(){
     switch(shapeClick){
     case 0:
       rectMode(CENTER);
-       rect(posX, posY, 10, 10);
+       rect(posX, posY, 20, 20);
       break;
      case 1:
-       ellipse(posX, posY, 10, 10);
+       ellipse(posX, posY, 20, 20);
        break;
       case 2:
        triangle(posX, posY - 20, posX - 20, posY + 20, posX + 20, posY + 20);
