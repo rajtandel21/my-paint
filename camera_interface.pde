@@ -3,3 +3,10 @@
 //3. use the object to draw on screen
 
 //import TUIO.*;
+
+//TuioProcessing tuio;
+
+//void setup(){
+//  size(800,800);
+//  tuio = new TuioProcessing();
+//}

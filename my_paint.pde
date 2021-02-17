@@ -1,3 +1,6 @@
+import TUIO.*;
+
+TuioProcessing tuio;
 
 color[] colorArray = {
   color(0, 0, 0),
@@ -30,14 +33,18 @@ int shapeClick = 1;
 
 color currentColor = colorArray[0];
 
+float posX;
+float posY;
+float posAngle;
 
 void setup(){
   background(255);
   size(1100,800);
+  tuio = new TuioProcessing(this);
 }
 
 void draw(){
-  noStroke();
+  cursor(HAND);
   fill(200);
   rect(0, 0, width, 80);
   
@@ -53,36 +60,47 @@ void draw(){
     xArray[i] = tempWidth;
     ellipse(tempWidth, cHeight, 40, 40);
   }
+  drawing();
+  angleChange();
+  println(posX, posY);
 }
 
-void mousePressed(){
-  if(mouseButton == LEFT){
+void updateTuioObject(TuioObject objectTuio){
+  posX = round(objectTuio.getX()*width);
+  posY = round(objectTuio.getY()*height);
+  posAngle = round(objectTuio.getAngleDegrees());
+}
+
+void angleChange(){
+  if(posAngle >= 80 && posAngle <= 100){
     update();
     updateShape();
   }
 }
 
-void mouseDragged(){
+void drawing(){
   noStroke();
   fill(currentColor);
-  switch(shapeClick){
+  if(posY > 80 && posAngle >=80 && posAngle <=100){
+    switch(shapeClick){
     case 0:
       rectMode(CENTER);
-       rect(mouseX, mouseY, 10, 10);
+       rect(posX, posY, 10, 10);
       break;
      case 1:
-       ellipse(mouseX, mouseY, 10, 10);
+       ellipse(posX, posY, 10, 10);
        break;
       case 2:
-       triangle(mouseX, mouseY - 20, mouseX - 20, mouseY + 20, mouseX + 20, mouseY + 20);
+       triangle(posX, posY - 20, posX - 20, posY + 20, posX + 20, posY + 20);
        break;
+    }
   }
 }
 
 void updateShape(){
   for(int i=0; i < sArray.length; i++){
-    if (mouseX >= sArray[i][0]-25 && mouseX <= sArray[i][0]+25 && 
-      mouseY >= sArray[i][1]-20 && mouseY <= sArray[i][1]+20) {
+    if (posX >= sArray[i][0]-25 && posX <= sArray[i][0]+25 && 
+      posY >= sArray[i][1]-20 && posY <= sArray[i][1]+20) {
       shapeClick =  i;
       break;
       }
@@ -90,8 +108,8 @@ void updateShape(){
 }
 void update() {
   for(int i =0; i < xArray.length; i++){
-    float disX = xArray[i] - mouseX;
-    float disY = cHeight - mouseY;
+    float disX = xArray[i] - posX;
+    float disY = cHeight - posY;
     if (sqrt(sq(disX) + sq(disY)) < cDiameter/2 ) {
       clicked =  i;
       break;
